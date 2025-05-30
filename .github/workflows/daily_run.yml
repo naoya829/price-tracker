@@ -1,0 +1,27 @@
+name: Run Python script daily
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 毎日午前0時（UTC）に実行
+  workflow_dispatch:     # 手動でも実行できるようにする
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run script
+        run: |
+          python price_log.py
