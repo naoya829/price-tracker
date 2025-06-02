@@ -2,8 +2,11 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 from datetime import datetime
 import os
+
+
 
 # -------------------------------
 # ① 価格.comの商品ページURL
@@ -47,8 +50,12 @@ print("CSVに保存しました。")
 # -------------------------------
 # ④ グラフ表示（価格の推移）
 # -------------------------------
-df["datetime"] = pd.to_datetime(df["datetime"])
+df["datetime"] = pd.to_datetime(df["datetime"], format='mixed', errors='coerce')
+df.dropna(subset=["datetime"], inplace=True)
 df["price"] = df["price"].astype(int)
+
+# 日本語フォントの指定（Windows）
+plt.rcParams['font.family'] = 'MS Gothic'  # または 'Meiryo', 'Yu Gothic'
 
 plt.figure(figsize=(10, 5))
 plt.plot(df["datetime"], df["price"], marker='o', linestyle='-')
